@@ -3,6 +3,7 @@ interface ImagePreviewProps {
   fileName: string;
   fileSizeBytes: number;
   imageDimensions: { width: number; height: number } | null;
+  resultDataUrl?: string | null;
 }
 
 function formatFileSize(bytes: number): string {
@@ -19,17 +20,42 @@ export function ImagePreview({
   fileName,
   fileSizeBytes,
   imageDimensions,
+  resultDataUrl,
 }: ImagePreviewProps) {
   return (
     <main className="relative flex-1 flex flex-col items-center justify-center px-6 py-8">
-      <div className="flex flex-col items-center gap-6 max-w-2xl w-full">
-        <div className="flex justify-center">
+      <div
+        className={`flex max-w-full w-full justify-center ${
+          resultDataUrl
+            ? "flex-col sm:flex-row items-center gap-6 sm:gap-10"
+            : "flex-col items-center gap-6 max-w-2xl"
+        }`}
+      >
+        <div className="flex flex-col items-center gap-2">
+          {resultDataUrl && (
+            <span className="font-mono text-xs uppercase tracking-wide text-[#666]">
+              Original
+            </span>
+          )}
           <img
             src={preview}
             alt="Preview"
             className="max-h-96 max-w-full object-contain rounded-lg shadow-md"
           />
         </div>
+
+        {resultDataUrl && (
+          <div className="flex flex-col items-center gap-2">
+            <span className="font-mono text-xs uppercase tracking-wide text-[#666]">
+              Image with hidden message
+            </span>
+            <img
+              src={resultDataUrl}
+              alt="Image with hidden message"
+              className="max-h-96 max-w-full object-contain rounded-lg shadow-md"
+            />
+          </div>
+        )}
       </div>
       <div className="absolute bottom-6 left-6 w-auto bg-white border border-[#E5E5E5] rounded-lg p-6 space-y-3">
         <div className="flex flex-col gap-2 font-mono text-sm text-[#1a1a1a]">
